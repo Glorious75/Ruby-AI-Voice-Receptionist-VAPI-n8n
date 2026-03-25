@@ -1,4 +1,4 @@
-# 🎙️ Ruby — AI Voice Receptionist | Gold Coast Kitchen
+#  Ruby — AI Voice Receptionist | Gold Coast Kitchen
 ### Built with VAPI + n8n + Google Sheets + Gmail
 
 ![Status](https://img.shields.io/badge/Status-Live%20%E2%9C%85-brightgreen?style=for-the-badge)
