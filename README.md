@@ -185,26 +185,13 @@ ruby-ai-voice-receptionist/
 4. **Assign phone number** — link your phone number to the Ruby assistant in VAPI
 5. **Test each workflow** — use the test payloads below before going live
 
-### Ruby live call
-
-```json
 ### 🎙️ Hear Ruby in Action — First Live Test Call
 
 Click below to listen to Ruby handling a real inbound call from start to finish:
 
-[![Listen to Ruby's First Live Call](https://img.shields.io/badge/▶%20Play-Ruby's%20First%20Live%20Call-gold?style=for-the-badge)](https://drive.google.com/file/d/1nEBeGHHVaXmO9zw09SH2LmE_8mFtdQF8/view?usp=sharing)
+[▶ Click here to listen to Ruby's First Live Call](https://drive.google.com/file/d/1nEBeGHHVaXmO9zw09SH2LmE_8mFtdQF8/view?usp=sharing)
 
 > Ruby answers the call, takes the order, confirms details and triggers the automated email — all without any human involvement.
-```
-
-## STEP 4 — Commit the change
-
-Scroll down and in the commit message type:
-```
-Added live test call recording link
-```
-
----
 
 ## 💼 Business Impact
 
