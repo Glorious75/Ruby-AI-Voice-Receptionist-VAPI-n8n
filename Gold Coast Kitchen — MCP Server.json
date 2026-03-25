@@ -1,0 +1,517 @@
+{
+  "name": "Gold Coast Kitchen — MCP Server",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "01d46ce3-09fa-40f6-8dc8-6ad485010fe1"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "58649d94-18ea-44c7-924f-574286a53623",
+      "name": "MCP Server Trigger",
+      "webhookId": "01d46ce3-09fa-40f6-8dc8-6ad485010fe1"
+    },
+    {
+      "parameters": {
+        "description": "Use this tool to answer any customer questions about Gold Coast Kitchen—hours, location, menu, allergens, halal, parking, delivery, and policies.",
+        "workflowId": {
+          "__rl": true,
+          "value": "XYFglJf9cZftbgdh",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/XYFglJf9cZftbgdh",
+          "cachedResultName": "GCK — FAQ Lookup"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        -576,
+        304
+      ],
+      "id": "a1390119-0152-401c-a474-8499f7acf220",
+      "name": "Call 'GCK — FAQ Lookup'"
+    },
+    {
+      "parameters": {
+        "description": "Use this tool when the customer wants to see or hear the menu. Call this to retrieve menu items by category — Soups & Swallows, Rice & Grains, Mains & Sides, Fresh Drinks, Non-Alcoholic Drinks, Alcoholic Drinks.",
+        "workflowId": {
+          "__rl": true,
+          "value": "QcOAF919Osk5B7IS",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/QcOAF919Osk5B7IS",
+          "cachedResultName": "GCK — Present Menu"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        -432,
+        320
+      ],
+      "id": "d10443c7-8f9c-44b4-b042-1a6f786f7e54",
+      "name": "Call 'GCK — Present Menu'"
+    },
+    {
+      "parameters": {
+        "description": "Use this tool to place a food order for delivery or pickup after collecting all customer details and confirming the order summary. Requires: name, phone, email, items, order type, and address (delivery) or pickup time.",
+        "workflowId": {
+          "__rl": true,
+          "value": "wCY0ucELpi9M8O4W",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/wCY0ucELpi9M8O4W",
+          "cachedResultName": "GCK — Place Order"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        -272,
+        320
+      ],
+      "id": "e1af87f0-65c5-4b23-a6ab-dc3a8035d4f7",
+      "name": "Call 'GCK — Place Order'"
+    },
+    {
+      "parameters": {
+        "description": "Look up an existing food order status by phone number",
+        "workflowId": {
+          "__rl": true,
+          "value": "Hp9XwlBgjOwdQD8a",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/Hp9XwlBgjOwdQD8a",
+          "cachedResultName": "GCK — Lookup Order"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        -96,
+        528
+      ],
+      "id": "cb6ec780-7a44-4ab8-8483-35a81c059a82",
+      "name": "Call 'GCK — Lookup Order'"
+    },
+    {
+      "parameters": {
+        "description": "Look up a customer in the CRM by phone number to check if they are an existing customer",
+        "workflowId": {
+          "__rl": true,
+          "value": "ICUYxrxJgbvgRtLj",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/ICUYxrxJgbvgRtLj",
+          "cachedResultName": "GCK — Client Lookup"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [
+            "phone"
+          ],
+          "schema": [
+            {
+              "id": "phone",
+              "displayName": "phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        32,
+        448
+      ],
+      "id": "80042313-48bd-48da-8c0c-c4271e9c3a2a",
+      "name": "Call 'GCK — Client Lookup'"
+    },
+    {
+      "parameters": {
+        "description": "Register a new customer in the CRM with their name, phone and email",
+        "workflowId": {
+          "__rl": true,
+          "value": "JoNpI1VJ4UllHDFl",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/JoNpI1VJ4UllHDFl",
+          "cachedResultName": "GCK — New Client CRM"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        -240,
+        512
+      ],
+      "id": "8a7ed530-ca8d-4184-94eb-b3a262c85c0e",
+      "name": "Call 'GCK — New Client CRM'"
+    },
+    {
+      "parameters": {
+        "description": "Check table availability for a given date, time, guest count and table type",
+        "workflowId": {
+          "__rl": true,
+          "value": "MLFjdpKli9YH6CLT",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/MLFjdpKli9YH6CLT",
+          "cachedResultName": "GCK — Check Availability"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        176,
+        448
+      ],
+      "id": "553cdd71-aa3f-4cfb-94ab-d212a0dd987a",
+      "name": "Call 'GCK — Check Availability'"
+    },
+    {
+      "parameters": {
+        "description": "Create a table reservation after availability is confirmed and customer has agreed",
+        "workflowId": {
+          "__rl": true,
+          "value": "8xmbGyafByzHZQ3z",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/8xmbGyafByzHZQ3z",
+          "cachedResultName": "GCK — Book Event"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        304,
+        512
+      ],
+      "id": "d49968d8-3198-44dd-8718-5b650b54eae0",
+      "name": "Call 'GCK — Book Event'"
+    },
+    {
+      "parameters": {
+        "description": "Modify an existing reservation with new date, time or guest details",
+        "workflowId": {
+          "__rl": true,
+          "value": "kFUrsygwHIaWuKPq",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/kFUrsygwHIaWuKPq",
+          "cachedResultName": "GCK — Update Appointment"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        448,
+        512
+      ],
+      "id": "db4d10aa-c993-40cf-be48-35ad553b7841",
+      "name": "Call 'GCK — Update Appointment'"
+    },
+    {
+      "parameters": {
+        "description": "Cancel an existing reservation and initiate refund if payment was made",
+        "workflowId": {
+          "__rl": true,
+          "value": "XCPcgEeiXJTxb3Wq",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/XCPcgEeiXJTxb3Wq",
+          "cachedResultName": "GCK — Delete Appointment"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        496,
+        368
+      ],
+      "id": "189376a5-e1aa-4c8b-96f6-d0cbd04dd89e",
+      "name": "Call 'GCK — Delete Appointment'"
+    },
+    {
+      "parameters": {
+        "description": "Handle Paystack payment confirmation and update order or reservation status",
+        "workflowId": {
+          "__rl": true,
+          "value": "spQXvxyhxHmPyQ2q",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/spQXvxyhxHmPyQ2q",
+          "cachedResultName": "GCK — Paystack Webhook"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        832,
+        368
+      ],
+      "id": "f274ded6-3779-4414-8084-e6b6468a178c",
+      "name": "Call 'GCK — Paystack Webhook'"
+    },
+    {
+      "parameters": {
+        "description": "Use this tool to generate a secure Paystack payment link and send it to the customer's email address immediately after a food order or table reservation has been created. Always call this tool right after placeOrder or bookEvent succeeds. Requires: customer name, email, amount in Naira, and the orderId or resId reference.",
+        "workflowId": {
+          "__rl": true,
+          "value": "XtGTUXtLWaeZqfqB",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/XtGTUXtLWaeZqfqB",
+          "cachedResultName": "GCK — Create Payment Link"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        656,
+        368
+      ],
+      "id": "934814ef-4f0a-4b41-a953-6ea3a22fa783",
+      "name": "Call 'GCK — Create Payment Link'"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Call 'GCK — FAQ Lookup'": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'GCK — Present Menu'": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'GCK — Place Order'": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'GCK — Lookup Order'": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'GCK — Client Lookup'": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'GCK — New Client CRM'": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'GCK — Check Availability'": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'GCK — Book Event'": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'GCK — Update Appointment'": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'GCK — Delete Appointment'": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'GCK — Paystack Webhook'": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'GCK — Create Payment Link'": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "f97575ce-8e17-46c0-935a-c8c9d07c98c1",
+  "meta": {
+    "instanceId": "e0622078430b1ea13317630c9792433d97fbc6c5410cc0e721a315f8c106c418"
+  },
+  "id": "XR8UqiejkZJJ9aOw",
+  "tags": []
+}

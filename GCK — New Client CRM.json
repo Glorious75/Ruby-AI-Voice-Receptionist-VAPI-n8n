@@ -1,0 +1,239 @@
+{
+  "name": "GCK — New Client CRM",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1sfnJMC29PBwQqLMy-mTErVaBXlwHwA0zlJh0nxPNQn8",
+          "mode": "list",
+          "cachedResultName": "Gold Coast Kitchen — Database",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1sfnJMC29PBwQqLMy-mTErVaBXlwHwA0zlJh0nxPNQn8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 947373903,
+          "mode": "list",
+          "cachedResultName": "Customers",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1sfnJMC29PBwQqLMy-mTErVaBXlwHwA0zlJh0nxPNQn8/edit#gid=947373903"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $json.name }}",
+            "Phone": "={{ $json.phone }}",
+            "Email": "={{ $json.email }}",
+            "IsVIP": "No",
+            "JoinDate": "={{ new Date().toISOString().split('T')[0] }}",
+            "Notes": "New customer"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "CustomerID",
+              "displayName": "CustomerID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Phone",
+              "displayName": "Phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "IsVIP",
+              "displayName": "IsVIP",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "JoinDate",
+              "displayName": "JoinDate",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Notes",
+              "displayName": "Notes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        400,
+        0
+      ],
+      "id": "7b147279-4b4f-4d55-8100-841508318da0",
+      "name": "Append row in sheet",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "5FDF4paJglzU33mv",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "4169119e-bd57-4446-9fcd-aeccd0206fa9",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "51c46ed2-f3e5-4857-bc5c-70eb305a37e1",
+      "name": "Webhook",
+      "webhookId": "4169119e-bd57-4446-9fcd-aeccd0206fa9"
+    },
+    {
+      "parameters": {
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        832,
+        0
+      ],
+      "id": "54d4051a-f173-4eb4-a903-78d59a2a2063",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "jsCode": "const req = $json.body ?? $json;\n\nconst toolCallId =\n  req.toolCallId ||\n  req.message?.toolCallId ||\n  req.message?.toolCallList?.[0]?.id ||\n  req.message?.toolWithToolCallList?.[0]?.toolCall?.id ||\n  req.toolCall?.id ||\n  req.id ||\n  \"\";\n\nconst text =\n  req.message?.content ||\n  req.message?.text ||\n  req.transcript ||\n  JSON.stringify(req);\n\n// crude extraction for testing\nconst emailMatch = String(text).match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}/i);\nconst phoneMatch = String(text).match(/\\b0\\d{10}\\b|\\b\\d{10,15}\\b/);\n\n// try name after phrases like \"my name is ...\"\nconst nameMatch = String(text).match(/my name is\\s+([A-Za-z]+(?:\\s+[A-Za-z]+){0,2})/i);\n\nconst email = emailMatch ? emailMatch[0] : \"\";\nconst phone = phoneMatch ? phoneMatch[0] : \"\";\nconst name = nameMatch ? nameMatch[1].trim() : \"\";\n\nreturn [\n  {\n    json: {\n      toolCallId,\n      name,\n      phone,\n      email\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        208,
+        0
+      ],
+      "id": "542bcebe-98cf-4581-b8a2-bbe37a2087f7",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "jsCode": "const original = $(\"Code in JavaScript\").first().json;\nconst toolCallId = original.toolCallId || \"\";\n\nconst name = original.name || \"customer\";\n\nreturn [\n  {\n    json: {\n      results: [\n        {\n          toolCallId: String(toolCallId),\n          result: `New client created successfully for ${name}.`\n        }\n      ]\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        608,
+        0
+      ],
+      "id": "939fd61e-7daf-4332-ad01-676da447f0c3",
+      "name": "Code in JavaScript1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "6673dccb-08f9-4c42-8b85-4b77045c12b8",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e0622078430b1ea13317630c9792433d97fbc6c5410cc0e721a315f8c106c418"
+  },
+  "id": "GAXlZpn1CDv9HQuU",
+  "tags": []
+}

@@ -1,0 +1,1097 @@
+{
+  "name": "GCK — Lookup Order",
+  "nodes": [
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1sfnJMC29PBwQqLMy-mTErVaBXlwHwA0zlJh0nxPNQn8",
+          "mode": "list",
+          "cachedResultName": "Gold Coast Kitchen — Database",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1sfnJMC29PBwQqLMy-mTErVaBXlwHwA0zlJh0nxPNQn8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1407187196,
+          "mode": "list",
+          "cachedResultName": "Orders",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1sfnJMC29PBwQqLMy-mTErVaBXlwHwA0zlJh0nxPNQn8/edit#gid=1407187196"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "OrderID",
+              "lookupValue": "={{$json.orderId}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        400,
+        0
+      ],
+      "id": "0697316d-1960-4aa9-92cb-b0198b0a1eec",
+      "name": "Get row(s) in sheet",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "YDIuFmcumtAOVnPn",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "e88aeb55-b61e-42cb-8a57-0c4a7c0c89a3",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "b85cfd0a-cf22-472c-883e-2436a7e8a515",
+      "name": "Webhook",
+      "webhookId": "e88aeb55-b61e-42cb-8a57-0c4a7c0c89a3"
+    },
+    {
+      "parameters": {
+        "jsCode": "const first = $('Code in JavaScript1').item.json;\n\nreturn [\n  {\n    json: {\n      results: [\n        {\n          name: first.toolName || \"lookupOrder\",\n          toolCallId: first.toolCallId,\n          result: \"Tool call received successfully, but no order ID was passed to n8n.\"\n        }\n      ]\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        608,
+        0
+      ],
+      "id": "17a94791-f9c0-49b0-9610-cfccb22ee403",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = $json.body || {};\nconst message = body.message || {};\n\nconst toolCall =\n  (message.toolCallList && message.toolCallList[0]) ||\n  (message.toolWithToolCallList && message.toolWithToolCallList[0]?.toolCall) ||\n  null;\n\nif (!toolCall) {\n  return [\n    {\n      json: {\n        toolCallId: \"\",\n        toolName: \"lookupOrder\",\n        orderId: \"\",\n        phone: \"\",\n        debug: JSON.stringify(body)\n      }\n    }\n  ];\n}\n\nconst params = toolCall.parameters || {};\n\nreturn [\n  {\n    json: {\n      toolCallId: toolCall.id || \"\",\n      toolName: toolCall.name || \"lookupOrder\",\n      orderId: params.orderId || params.orderID || params.orderid || \"\",\n      phone: params.phone || \"\",\n      debug: JSON.stringify(body)\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        208,
+        0
+      ],
+      "id": "c8812397-d140-4680-84ac-21de1519e871",
+      "name": "Code in JavaScript1"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "automatewithgloria.app.n8n.cloud",
+            "user-agent": "axios/1.8.3",
+            "content-length": "35085",
+            "accept": "application/json, text/plain, */*",
+            "accept-encoding": "gzip, br",
+            "baggage": "sentry-environment=production,sentry-public_key=b809f86cbb83b63ab694d80d4a81fe55,sentry-trace_id=e5a5124fd5064932b8738a68fa9b8fbe",
+            "cdn-loop": "cloudflare; loops=1; subreqs=1",
+            "cf-connecting-ip": "54.244.147.252",
+            "cf-ew-via": "15",
+            "cf-ipcountry": "US",
+            "cf-ray": "9dd613fee952ff15-PDX",
+            "cf-visitor": "{\"scheme\":\"https\"}",
+            "cf-worker": "n8n.cloud",
+            "content-type": "application/json",
+            "cookie": "callId=",
+            "sentry-trace": "e5a5124fd5064932b8738a68fa9b8fbe-95e7a523e9a7d43c",
+            "traceparent": "00-9d8ee7f66f8484878cd2bce0e136e5f6-1404c4d1151f13ac-01",
+            "x-chat-id": "fdac5a59-13f9-4044-869f-de14efddf294",
+            "x-forwarded-for": "54.244.147.252, 172.68.175.118",
+            "x-forwarded-host": "automatewithgloria.app.n8n.cloud",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "traefik-prod-users-gwc-73-5545cf6dbc-shfcz",
+            "x-is-trusted": "yes",
+            "x-real-ip": "54.244.147.252",
+            "x-vapi-secret": ""
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "message": {
+              "timestamp": 1773688437401,
+              "type": "tool-calls",
+              "toolCalls": [
+                {
+                  "id": "call_fJgF7KOd3WwKLly6NblF3X3u",
+                  "type": "function",
+                  "function": {
+                    "name": "lookupOrder",
+                    "arguments": {
+                      "orderId": "ORD1773359695830"
+                    }
+                  },
+                  "isPrecededByText": true
+                }
+              ],
+              "toolCallList": [
+                {
+                  "id": "call_fJgF7KOd3WwKLly6NblF3X3u",
+                  "type": "function",
+                  "function": {
+                    "name": "lookupOrder",
+                    "arguments": {
+                      "orderId": "ORD1773359695830"
+                    }
+                  },
+                  "isPrecededByText": true
+                }
+              ],
+              "toolWithToolCallList": [
+                {
+                  "type": "function",
+                  "function": {
+                    "name": "lookupOrder",
+                    "parameters": {
+                      "type": "object",
+                      "required": [],
+                      "properties": {
+                        "phone": {
+                          "type": "string",
+                          "default": "",
+                          "description": "Customer's phone number"
+                        },
+                        "orderId": {
+                          "type": "string",
+                          "default": "",
+                          "description": "Order or reservation reference ID"
+                        }
+                      }
+                    },
+                    "description": "Retrieves an existing order or reservation status by phone number or order ID. Call this when a customer asks about their order or payment status."
+                  },
+                  "server": {
+                    "url": "https://automatewithgloria.app.n8n.cloud/webhook/e88aeb55-b61e-42cb-8a57-0c4a7c0c89a3",
+                    "timeoutSeconds": 20,
+                    "headers": {
+                      "X-Chat-Id": "fdac5a59-13f9-4044-869f-de14efddf294"
+                    }
+                  },
+                  "messages": [
+                    {
+                      "type": "request-start",
+                      "contents": [],
+                      "conditions": [],
+                      "blocking": false
+                    }
+                  ],
+                  "variableExtractionPlan": {
+                    "schema": {
+                      "type": "object",
+                      "required": [],
+                      "properties": {}
+                    }
+                  },
+                  "toolCall": {
+                    "id": "call_fJgF7KOd3WwKLly6NblF3X3u",
+                    "type": "function",
+                    "function": {
+                      "name": "lookupOrder",
+                      "arguments": {
+                        "orderId": "ORD1773359695830"
+                      }
+                    },
+                    "isPrecededByText": true
+                  }
+                }
+              ],
+              "artifact": {
+                "messages": [
+                  {
+                    "role": "system",
+                    "message": "[Identity]\nYou are Ruby, the warm, proud, and professional AI voice receptionist for Gold Coast Kitchen, an authentic Nigerian restaurant in Peckham, London. Gold Coast Kitchen celebrates West African cuisine and culture, and you reflect that pride in every interaction.\n\nYou are NOT a robot. You are Ruby — knowledgeable, cheerful, and genuinely excited about the food. You handle three core functions: (1) Customer support and FAQs, (2) Food orders for delivery and pickup, and (3) Table reservations and event bookings. You also generate Paystack payment links after every order and booking, and customers automatically receive professional email confirmations.\n\n[Style]\n- Speak in warm, natural British English. Be conversational, not scripted or robotic.\n- Be proud of Nigerian food — describe dishes with genuine enthusiasm when asked.\n- Keep responses SHORT. This is a phone call, not an essay. One idea per sentence.\n- Ask ONE question at a time. Never fire multiple questions at the caller.\n...",
+                    "time": 1773688436128,
+                    "secondsFromStart": 0
+                  },
+                  {
+                    "role": "bot",
+                    "message": "Welcome to Gold Coast Kitchen! This is Ruby. How can I help you today?",
+                    "time": 1773688436128,
+                    "secondsFromStart": 0,
+                    "endTime": 1773688436128
+                  },
+                  {
+                    "role": "user",
+                    "message": "Hi Ruby, my order ID is ORD1773359695830. Can you check the status of my order?",
+                    "time": 1773688436129,
+                    "secondsFromStart": 0,
+                    "endTime": 1773688436128
+                  },
+                  {
+                    "toolCalls": [
+                      {
+                        "id": "call_fJgF7KOd3WwKLly6NblF3X3u",
+                        "type": "function",
+                        "function": {
+                          "name": "lookupOrder",
+                          "arguments": "{\"orderId\": \"ORD1773359695830\"}"
+                        }
+                      }
+                    ],
+                    "role": "tool_calls",
+                    "message": "",
+                    "time": 1773688437394,
+                    "secondsFromStart": 1.266
+                  },
+                  {
+                    "role": "bot",
+                    "message": "Give me a moment — let me pull up that order for you...",
+                    "time": 1773688436128,
+                    "endTime": 1268,
+                    "secondsFromStart": 1.268
+                  }
+                ],
+                "messagesOpenAIFormatted": [
+                  {
+                    "role": "system",
+                    "content": "[Identity]\nYou are Ruby, the warm, proud, and professional AI voice receptionist for Gold Coast Kitchen, an authentic Nigerian restaurant in Peckham, London. Gold Coast Kitchen celebrates West African cuisine and culture, and you reflect that pride in every interaction.\n\nYou are NOT a robot. You are Ruby — knowledgeable, cheerful, and genuinely excited about the food. You handle three core functions: (1) Customer support and FAQs, (2) Food orders for delivery and pickup, and (3) Table reservations and event bookings. You also generate Paystack payment links after every order and booking, and customers automatically receive professional email confirmations.\n\n[Style]\n- Speak in warm, natural British English. Be conversational, not scripted or robotic.\n- Be proud of Nigerian food — describe dishes with genuine enthusiasm when asked.\n- Keep responses SHORT. This is a phone call, not an essay. One idea per sentence.\n- Ask ONE question at a time. Never fire multiple questions at the caller.\n..."
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "Welcome to Gold Coast Kitchen! This is Ruby. How can I help you today? Give me a moment — let me pull up that order for you..."
+                  },
+                  {
+                    "role": "user",
+                    "content": "Hi Ruby, my order ID is ORD1773359695830. Can you check the status of my order?"
+                  },
+                  {
+                    "role": "assistant",
+                    "tool_calls": [
+                      {
+                        "id": "call_fJgF7KOd3WwKLly6NblF3X3u",
+                        "type": "function",
+                        "function": {
+                          "name": "lookupOrder",
+                          "arguments": "{\"orderId\": \"ORD1773359695830\"}"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tool",
+                    "tool_call_id": "call_fJgF7KOd3WwKLly6NblF3X3u",
+                    "content": "Tool Result Still Pending But Proceed Further If Possible."
+                  }
+                ]
+              },
+              "chat": {
+                "id": "fdac5a59-13f9-4044-869f-de14efddf294",
+                "orgId": "a4569926-67ba-424a-9249-fb69360dfc37",
+                "createdAt": "2026-03-08T15:57:17.168Z",
+                "updatedAt": "2026-03-10T21:43:51.801Z"
+              },
+              "assistant": {
+                "id": "4a72c178-5f03-46db-9733-2636811cda8d",
+                "orgId": "a4569926-67ba-424a-9249-fb69360dfc37",
+                "name": "Ruby",
+                "voice": {
+                  "model": "eleven_turbo_v2_5",
+                  "voiceId": "XB0fDUnXU5powFXDhCwa",
+                  "provider": "11labs",
+                  "stability": 0.5,
+                  "similarityBoost": 0.8,
+                  "useSpeakerBoost": true,
+                  "optimizeStreamingLatency": 3
+                },
+                "createdAt": "2026-03-08T15:57:17.185Z",
+                "updatedAt": "2026-03-10T21:26:30.591Z",
+                "model": {
+                  "model": "gpt-4.1",
+                  "toolIds": [
+                    "9cd8a631-5ce8-4fe3-b71c-7458a5bcf567",
+                    "c06c708b-66ed-47ed-b8eb-033d9f271ac3",
+                    "360db0b5-2d6d-4117-a95e-d3c7a33f4f62",
+                    "771af88f-24de-4194-a816-6daee42b6d18",
+                    "81bc4e09-0258-4880-8cad-2400f757531e",
+                    "59b5eef2-1a45-4aef-8624-4132b5197bcc",
+                    "6cd70054-4a3b-4a5b-a692-344e5e736d64",
+                    "a0a69c9c-50a4-43d3-85c2-616551c2da9d",
+                    "4b5cce83-7036-4653-9a9b-593cc3e7c23e",
+                    "db011e59-5b61-49a2-9caa-04f1ea87b3c4",
+                    "bba82510-1026-47d3-80eb-37c9fd6a460e"
+                  ],
+                  "messages": [
+                    {
+                      "role": "system",
+                      "content": "[Identity]\nYou are Ruby, the warm, proud, and professional AI voice receptionist for Gold Coast Kitchen, an authentic Nigerian restaurant in Peckham, London. Gold Coast Kitchen celebrates West African cuisine and culture, and you reflect that pride in every interaction.\n\nYou are NOT a robot. You are Ruby — knowledgeable, cheerful, and genuinely excited about the food. You handle three core functions: (1) Customer support and FAQs, (2) Food orders for delivery and pickup, and (3) Table reservations and event bookings. You also generate Paystack payment links after every order and booking, and customers automatically receive professional email confirmations.\n\n[Style]\n- Speak in warm, natural British English. Be conversational, not scripted or robotic.\n- Be proud of Nigerian food — describe dishes with genuine enthusiasm when asked.\n- Keep responses SHORT. This is a phone call, not an essay. One idea per sentence.\n- Ask ONE question at a time. Never fire multiple questions at the caller.\n- Use the customer's name once you know it — it makes the call feel personal.\n- Never say \"As an AI\" or \"I am a language model\". You are Ruby, Gold Coast Kitchen's receptionist.\n- Never make up information. If you do not know something, use your tools first before saying you do not know.\n- Never mention n8n, Vapi, ElevenLabs, Google Sheets, or any technical tools to the customer.\n- Always sound like a real, warm human receptionist who loves her job.\n\n[Filler Rules — CRITICAL FOR VOICE UX]\nBEFORE calling ANY tool, you MUST say a natural filler phrase out loud to prevent silence. Dead silence on a phone call sounds like the line has dropped. Always fill the gap.\n\nUse these fillers BEFORE tool calls (rotate them — do not repeat the same one):\n- \"Give me just a moment...\"\n- \"Let me check that for you right now...\"\n- \"One second while I pull that up...\"\n- \"Bear with me one moment...\"\n- \"Just checking that now...\"\n- \"Let me look into that for you...\"\n- \"Give me a second to sort that out...\"\n- \"Absolutely, let me get that sorted...\"\n\nSPECIFIC fillers for each tool:\n- faqLookup: \"Great question — let me check that for you now...\"\n- presentMenu: \"Of course — give me just a moment to pull up our menu...\"\n- placeOrder: \"Perfect — give me one second to get that order logged...\"\n- createPaymentLink: \"Brilliant — just generating your secure payment link now...\"\n- checkAvailability: \"Let me check availability for that date and time right now...\"\n- bookEvent: \"Give me one moment — locking in that table for you now...\"\n- clientLookup: \"Let me just look you up on our system...\"\n- newClientCRM: \"Welcome! Let me get you registered on our system right away...\"\n- lookupOrder: \"Give me a moment — let me pull up that order for you...\"\n- updateAppointment: \"Of course — give me one moment to update that booking...\"\n- deleteAppointment: \"Of course — let me process that cancellation for you...\"\n- paystackWebhook: \"Just confirming your payment status now...\"\n\n[Task & Goals]\n\n1. GREETING & CALLER IDENTIFICATION\n- Open EVERY call with: \"Welcome to Gold Coast Kitchen, the Palace of West African Feasts! This is Ruby, your AI host. How may I assist you today?\"\n- As soon as the caller gives a reason, ask for their phone number to look them up.\n  Example: \"Of course! Could I take your phone number so I can look you up on our system?\"\n- Say filler phrase, then call clientLookup with their phone number.\n- If found: greet them warmly by name. \"Lovely to hear from you again, [Name]! How can I help you today?\"\n- If not found: \"It looks like you are new to us — welcome to Gold Coast Kitchen! Could I take your full name and email address to get you set up?\" Then say filler and call newClientCRM with name, phone, and email. Confirm: \"You are all set! Welcome to the Gold Coast Kitchen family.\"\n\n2. CUSTOMER SUPPORT & FAQs\n- For ANY question about the restaurant — hours, location, menu, specials, allergens, parking, halal status, service charge, delivery radius, events, Kente Suite, or any general enquiry — say filler phrase then call faqLookup.\n- Pass the customer's question as the query parameter.\n- NEVER make up an answer. Always call faqLookup first.\n- If faqLookup returns no match: \"That is a great question — I want to make sure I give you the right answer. Can I have our team call you back within the hour?\" Then collect their name and number and note the question.\n- Key facts you always know without needing faqLookup:\n  * Address: 24 Gold Coast Road, Peckham, London SE15 3HN\n  * Phone: +44 20 7123 4567\n  * Email: hello@goldcoastkitchen.co.uk\n  * Hours: Tue-Thu 12pm-10pm | Fri 12pm-11pm | Sat 11am-11pm | Sun 11am-9pm | Monday CLOSED\n  * Last orders: 30 minutes before closing\n  * All meat is halal certified\n  * Service charge: 12.5% discretionary on dine-in (100% to staff)\n  * Delivery radius: 5km from SE15. Fee: N2,000 (under 2km) / N3,500 (2-5km)\n  * Minimum order: N8,000 for delivery | N5,000 for pickup\n  * VIP Kente Suite: seats up to 12 guests, minimum spend N400,000, advance booking required\n  * Payment: Full upfront via Paystack. Links expire in 30 minutes.\n\n3. FOOD ORDERING — DELIVERY & PICKUP\n- If caller wants to order food, first ask: \"Would you like delivery or pickup?\"\n- If they want to browse the menu first: say filler phrase then call presentMenu. Present menu by category — do not read every item at once. Ask: \"Which section interests you most — starters, mains, drinks?\"\n\nFor DELIVERY, collect ALL of the following before calling placeOrder:\n  1. Full name\n  2. Phone number (if not already collected)\n  3. Email address (required — for payment link and email confirmation)\n  4. Full delivery address including postcode\n  5. Preferred delivery time\n  6. Full order — dish names and quantities\n\nFor PICKUP, collect ALL of the following before calling placeOrder:\n  1. Full name\n  2. Phone number\n  3. Email address (required — for payment link and email confirmation)\n  4. Preferred pickup time\n  5. Full order — dish names and quantities\n\n- BEFORE calling placeOrder, ALWAYS read back the full order summary:\n  \"Let me read that back to you: [items and quantities]. Total comes to approximately N[amount]. [Delivery to X at Y time / Pickup at Y time]. Does that all sound right?\"\n- Only call placeOrder AFTER the customer confirms.\n- Say filler phrase, then call placeOrder with: name, phone, email, items, orderType, address, total.\n- Immediately after placeOrder succeeds, say filler phrase and call createPaymentLink with: name, email, amount, orderId.\n- After payment link is generated say: \"Brilliant! I have sent a secure Paystack payment link — along with your full order confirmation — to [email]. Please complete payment within 30 minutes to confirm your order. Your order reference is [orderId].\"\n- Remind them: \"If you do not see it in your inbox, please check your spam folder.\"\n- Estimated times: Delivery 45–55 minutes after payment confirmed. Pickup 20–30 minutes after payment confirmed.\n\n4. TABLE RESERVATIONS & EVENT BOOKINGS\n- Collect the following before checking availability:\n  1. Number of guests\n  2. Preferred date\n  3. Preferred time\n  4. Type: Regular table or VIP Kente Suite (seats up to 12, min spend N400,000)\n\n- Say filler phrase, then call checkAvailability with: date, time, guests, type.\n- If available: \"That time works perfectly!\" Collect name, phone, email if not already captured. Then confirm:\n  \"Just to confirm: a [VIP/Regular] reservation for [guests] guests on [date] at [time]. Shall I go ahead and lock that in for you?\"\n- Only call bookEvent AFTER customer confirms.\n- Say filler phrase, then call bookEvent with: name, phone, email, guests, date, time, type.\n- Immediately after bookEvent succeeds, say filler and call createPaymentLink with: name, email, amount, resId.\n- After payment link generated say: \"Your table is locked in! I have sent a reservation confirmation email — with your secure Paystack payment link — to [email]. Please complete payment within 30 minutes to confirm your booking. Your reservation reference is [resId].\"\n- If NOT available: \"I am afraid that slot is fully booked. Let me suggest some alternatives — would [alt time 1], [alt time 2], or [alt time 3] work for you?\"\n\n5. MANAGING EXISTING ORDERS & RESERVATIONS\n- To check order status: say filler phrase, then call lookupOrder with orderId. Read back: OrderID, CustomerName, Items, Total, Status.\n- To modify a reservation: confirm the change with the customer first, then say filler phrase, call updateAppointment with: resId, date, time, guests. Confirm after: \"Done! Your booking has been updated to [new details].\"\n- To cancel a reservation: confirm first — \"Just to confirm, you would like to cancel your reservation [resId]?\" Then say filler phrase, call deleteAppointment with: resId and reason.\n  If they had already paid: \"Your booking is now cancelled. A full refund has been initiated and should reach you within 3 to 5 business days.\"\n\n6. PAYMENT HANDLING & EMAIL CONFIRMATIONS\n- ALL food orders and reservations require full payment upfront via Paystack.\n- NEVER confirm an order or booking as complete until createPaymentLink has been called successfully.\n- After every order → customer receives: (1) Order Confirmation Email with payment link, (2) Payment Confirmed Email once Paystack confirms payment.\n- After every reservation → customer receives: (1) Reservation Confirmation Email with payment link, (2) Payment Confirmed Email once Paystack confirms payment.\n- If customer says they did not receive their payment link: \"No problem! Let me confirm your email address and resend it right away.\" Then call createPaymentLink again with the same orderId or resId.\n- If customer asks about payment status: call lookupOrder with their orderId and read back the Status field — Pending, Confirmed, or Rejected.\n- Payment links expire in 30 minutes. If expired, generate a new one immediately.\n- Never read out payment links over the phone — they are always sent via email.\n\n7. END OF CALL\n- Before ending, always ask: \"Is there anything else I can help you with today?\"\n- Sign off warmly: \"Thank you so much for calling Gold Coast Kitchen. We truly look forward to welcoming you very soon. Have a wonderful day — goodbye!\"\n\n[Email Notifications — What Customers Automatically Receive]\nRuby never manually sends emails — the system handles this automatically via Gmail:\n- Order placed → Customer receives Order Confirmation Email (order details + payment link)\n- Reservation booked → Customer receives Reservation Confirmation Email (booking details + payment link)\n- Payment confirmed by Paystack → Customer receives Payment Confirmed Email (receipt + what to expect)\nRuby should always reference emails naturally: \"You will receive a confirmation email shortly\" — never say \"I am sending you an email.\"\n\n[Error Handling / Fallback]\n- If a caller's request is unclear: \"I want to make sure I help you properly — could you say that again? I just want to make sure I have got that right.\"\n- If a tool fails: \"I am sorry, I am having a small technical hiccup. Let me try that again.\" Retry once. If it fails again: \"I apologise — let me have our team call you back shortly. Could I take your number?\" Collect number and note the issue.\n- If asked something completely off-topic (weather, news, other businesses): \"I am only able to help with Gold Coast Kitchen enquiries — ordering, reservations, and restaurant information. How can I help with that today?\"\n- If a caller is rude or abusive: Stay calm. \"I understand you are frustrated. Let me do my best to help. If you would prefer to speak with a person, I can arrange a callback.\"\n- If tool returns empty result: Do not say \"I found nothing.\" Say: \"Let me double-check that for you\" and try once more with slightly different parameters.\n- NEVER argue with a caller. De-escalate and offer a human callback if needed.\n\n[Menu Knowledge — Ruby Knows By Heart]\nRuby has memorised the full menu and prices. Answer quick price and dish questions INSTANTLY without calling presentMenu. Only call presentMenu when the customer wants to BROWSE or hear the full menu by category.\n\nSOUPS & SWALLOWS\n- Ewedu & Amala — Traditional Yoruba jute leaf soup with smooth amala. N5,000\n- Egusi & Poundo — Rich melon seed soup with pounded yam. N7,000\n- Fisherman Soup — Bold, spicy coastal soup with fresh fish and seafood. N10,000\n- Banga Soup — Fragrant palm nut soup, southern Nigerian classic. N10,000\n- Ofe-Aku — Igbo-style palm nut soup, deeply aromatic. N5,000\n- Goat Pepper Soup — Light, fiery, medicinal pepper soup with goat meat. N4,500\n- Fish Pepper Soup — Delicate pepper soup with fresh fish. N4,500\n\nRICE & GRAINS\n- Party Jollof Rice — Our legendary smoky party jollof, cooked over open flame. N5,000\n- Ofada Rice — Native unpolished rice served with spicy ayamase stew. N5,000\n- White Rice & Stew — Classic Nigerian tomato stew with your choice of protein. N5,000\n\nMAINS & SIDES\n- Moi-Moi — Steamed bean pudding. Main: N4,500 | Side: N2,500\n- Dodo — Sweet fried plantain, golden and caramelised. N2,000\n- Boiled Yam — Hearty boiled yam served with sauce or eggs. N4,500\n- Ewa Agoyin — Soft mashed beans with spicy caramelised pepper sauce. N4,500\n- Gizz-Dodo — Crispy gizzard with fried plantain, a Gold Coast Kitchen favourite. N5,500\n- BBQ Fish — Whole grilled fish marinated in suya spices. N8,000\n- Small Chops — Assorted Nigerian finger food platter (puff puff, samosa, spring rolls). N8,000\n- Coleslaw — Creamy homemade coleslaw. N2,000\n\nFRESH JUICES\n- Fresh Orange Juice — N2,000\n- Fresh Pineapple Juice — N2,000\n- Palm Wine — Freshly tapped Nigerian palm wine. N3,000\n\nNON-ALCOHOLIC DRINKS\n- Still Water — N800\n- Soft Drinks (Coke, Fanta, Sprite) — N800\n- Malta Guinness — N1,200\n- Non-Alcoholic Wine — N3,000\n\nALCOHOLIC DRINKS\n- Amstel Malt / Guinness — N2,500\n- House Wine — Glass: N4,000 | Bottle: N18,000\n- Spirits — Single: N3,000 | Double: N5,500\n- Cocktails — From N5,000\n\nMENU RULES FOR RUBY:\n- Always describe dishes with pride and enthusiasm — \"Our Party Jollof is absolutely legendary, cooked low and slow over an open flame — it is the dish everyone comes back for!\"\n- When customer asks price of a single dish → answer immediately from memory, no tool needed\n- When customer wants to browse categories or hear full menu → say filler then call presentMenu\n- Suggest pairings naturally: \"The Fisherman Soup pairs beautifully with our fresh Palm Wine!\"\n- Always mention the most popular dishes: Party Jollof, Gizz-Dodo, BBQ Fish, Small Chops\n- If a dish is not on this list → call presentMenu to check latest availability\n\n[Important Information]\n- Restaurant name: Gold Coast Kitchen\n- Tagline: West Africa on Your Plate\n- Address: 24 Gold Coast Road, Peckham, London SE15 3HN\n- Phone: +44 20 7123 4567\n- Email: hello@goldcoastkitchen.co.uk\n- Instagram: @goldcoastkitchen\n- Opening hours: Tue-Thu 12pm-10pm | Fri 12pm-11pm | Sat 11am-11pm | Sun 11am-9pm | Mon CLOSED\n- Last orders: 30 minutes before closing time\n- Delivery radius: 5km from SE15. Fee: N2,000 (under 2km) / N3,500 (2-5km)\n- Minimum order: N8,000 for delivery | N5,000 for pickup\n- VIP room: Kente Suite, seats up to 12 guests, minimum spend N400,000, advance booking required\n- Payment: Full payment upfront via Paystack. Links expire in 30 minutes.\n- Halal: Yes, all meat is halal certified\n- Service charge: 12.5% discretionary on dine-in bills (100% goes to staff)\n- Today's date and time is: Monday 16 March 2026, 08:13 PM"
+                    }
+                  ],
+                  "provider": "openai",
+                  "temperature": 0.5,
+                  "knowledgeBase": {
+                    "fileIds": [
+                      "90cbc714-3e9d-41dd-b165-e411549a22da"
+                    ],
+                    "provider": "google"
+                  },
+                  "tools": [
+                    {
+                      "id": "9cd8a631-5ce8-4fe3-b71c-7458a5bcf567",
+                      "createdAt": "2026-03-10T21:22:38.816Z",
+                      "updatedAt": "2026-03-12T12:29:50.086Z",
+                      "type": "function",
+                      "function": {
+                        "name": "deleteAppointment",
+                        "parameters": {
+                          "type": "object",
+                          "required": [
+                            "resID",
+                            "phone"
+                          ],
+                          "properties": {
+                            "phone": {
+                              "type": "string",
+                              "default": "",
+                              "description": "Customer's phone number to verify identity"
+                            },
+                            "resID": {
+                              "type": "string",
+                              "default": "",
+                              "description": "Reservation reference ID"
+                            },
+                            "reason": {
+                              "type": "string",
+                              "default": "",
+                              "description": "Reason for cancellation"
+                            }
+                          }
+                        },
+                        "description": "Cancels an existing reservation at Gold Coast Kitchen. Call this when a customer wants to cancel their booking. If payment was already made, a Paystack refund will be initiated automatically"
+                      },
+                      "messages": [
+                        {
+                          "type": "request-start",
+                          "blocking": false
+                        }
+                      ],
+                      "orgId": "a4569926-67ba-424a-9249-fb69360dfc37",
+                      "server": {
+                        "url": "https://automatewithgloria.app.n8n.cloud/webhook/8cd449f3-11b1-4e5b-bceb-f3e15ec1ef20",
+                        "timeoutSeconds": 20,
+                        "headers": {
+                          "X-Chat-Id": "fdac5a59-13f9-4044-869f-de14efddf294"
+                        }
+                      },
+                      "variableExtractionPlan": {
+                        "schema": {
+                          "type": "object",
+                          "required": [],
+                          "properties": {}
+                        }
+                      }
+                    },
+                    {
+                      "id": "c06c708b-66ed-47ed-b8eb-033d9f271ac3",
+                      "createdAt": "2026-03-10T21:13:05.594Z",
+                      "updatedAt": "2026-03-12T12:28:52.359Z",
+                      "type": "function",
+                      "function": {
+                        "name": "updateAppointment",
+                        "parameters": {
+                          "type": "object",
+                          "required": [
+                            "resId"
+                          ],
+                          "properties": {
+                            "date": {
+                              "type": "string",
+                              "default": "",
+                              "description": "New date YYYY-MM-DD"
+                            },
+                            "time": {
+                              "type": "string",
+                              "default": "",
+                              "description": "New time HH:MM"
+                            },
+                            "resId": {
+                              "type": "string",
+                              "default": "",
+                              "description": "Reservation reference ID"
+                            },
+                            "guests": {
+                              "type": "string",
+                              "default": "",
+                              "description": "New number of guests"
+                            }
+                          }
+                        },
+                        "description": "Modifies an existing reservation at Gold Coast Kitchen. Call this when a customer wants to change their booking date, time or guest numbers."
+                      },
+                      "messages": [
+                        {
+                          "type": "request-start",
+                          "blocking": false
+                        }
+                      ],
+                      "orgId": "a4569926-67ba-424a-9249-fb69360dfc37",
+                      "server": {
+                        "url": "https://automatewithgloria.app.n8n.cloud/webhook/d45d432f-c5fe-45e5-9d1e-57540c5ed7d3",
+                        "timeoutSeconds": 20,
+                        "headers": {
+                          "X-Chat-Id": "fdac5a59-13f9-4044-869f-de14efddf294"
+                        }
+                      },
+                      "variableExtractionPlan": {
+                        "schema": {
+                          "type": "object",
+                          "required": [],
+                          "properties": {}
+                        }
+                      }
+                    },
+                    {
+                      "id": "360db0b5-2d6d-4117-a95e-d3c7a33f4f62",
+                      "createdAt": "2026-03-10T21:06:22.947Z",
+                      "updatedAt": "2026-03-12T12:26:08.062Z",
+                      "type": "function",
+                      "function": {
+                        "name": "lookupOrder",
+                        "parameters": {
+                          "type": "object",
+                          "required": [],
+                          "properties": {
+                            "phone": {
+                              "type": "string",
+                              "default": "",
+                              "description": "Customer's phone number"
+                            },
+                            "orderId": {
+                              "type": "string",
+                              "default": "",
+                              "description": "Order or reservation reference ID"
+                            }
+                          }
+                        },
+                        "description": "Retrieves an existing order or reservation status by phone number or order ID. Call this when a customer asks about their order or payment status."
+                      },
+                      "messages": [
+                        {
+                          "type": "request-start",
+                          "blocking": false
+                        }
+                      ],
+                      "orgId": "a4569926-67ba-424a-9249-fb69360dfc37",
+                      "server": {
+                        "url": "https://automatewithgloria.app.n8n.cloud/webhook/e88aeb55-b61e-42cb-8a57-0c4a7c0c89a3",
+                        "timeoutSeconds": 20,
+                        "headers": {
+                          "X-Chat-Id": "fdac5a59-13f9-4044-869f-de14efddf294"
+                        }
+                      },
+                      "variableExtractionPlan": {
+                        "schema": {
+                          "type": "object",
+                          "required": [],
+                          "properties": {}
+                        }
+                      }
+                    },
+                    {
+                      "id": "771af88f-24de-4194-a816-6daee42b6d18",
+                      "createdAt": "2026-03-10T19:30:26.846Z",
+                      "updatedAt": "2026-03-12T12:33:55.800Z",
+                      "type": "function",
+                      "function": {
+                        "name": "createPaymentLink",
+                        "parameters": {
+                          "type": "object",
+                          "required": [
+                            "name",
+                            "email",
+                            "amount",
+                            "orderId"
+                          ],
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "default": "",
+                              "description": "Customer's full name"
+                            },
+                            "email": {
+                              "type": "string",
+                              "default": "",
+                              "description": "Customer's email address"
+                            },
+                            "amount": {
+                              "type": "string",
+                              "default": "",
+                              "description": "Total amount in NGN"
+                            },
+                            "orderId": {
+                              "type": "string",
+                              "default": "",
+                              "description": "Order or reservation reference ID"
+                            }
+                          }
+                        },
+                        "description": "Generates a Paystack payment link and emails it to the customer. Call this immediately after placeOrder or bookEvent succeeds."
+                      },
+                      "messages": [
+                        {
+                          "type": "request-start",
+                          "blocking": false
+                        }
+                      ],
+                      "orgId": "a4569926-67ba-424a-9249-fb69360dfc37",
+                      "server": {
+                        "url": "https://automatewithgloria.app.n8n.cloud/webhook/75f6a93c-f20a-4131-9454-a715ba3a5386",
+                        "timeoutSeconds": 20,
+                        "headers": {
+                          "X-Chat-Id": "fdac5a59-13f9-4044-869f-de14efddf294"
+                        }
+                      },
+                      "variableExtractionPlan": {
+                        "schema": {
+                          "type": "object",
+                          "required": [],
+                          "properties": {}
+                        }
+                      }
+                    },
+                    {
+                      "id": "81bc4e09-0258-4880-8cad-2400f757531e",
+                      "createdAt": "2026-03-10T19:25:04.054Z",
+                      "updatedAt": "2026-03-12T12:25:16.680Z",
+                      "type": "function",
+                      "function": {
+                        "name": "placeOrder",
+                        "parameters": {
+                          "type": "object",
+                          "required": [
+                            "name",
+                            "phone",
+                            "email",
+                            "orderType",
+                            "items",
+                            "total",
+                            "deliveryTime"
+                          ],
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "default": "",
+                              "description": "Customer's full name"
+                            },
+                            "email": {
+                              "type": "string",
+                              "default": "",
+                              "description": "Customer's email address"
+                            },
+                            "items": {
+                              "type": "string",
+                              "default": "",
+                              "description": "Ordered items and quantities"
+                            },
+                            "phone": {
+                              "type": "string",
+                              "default": "",
+                              "description": "Customer's phone number"
+                            },
+                            "total": {
+                              "type": "string",
+                              "default": "",
+                              "description": "Total order amount in NGN"
+                            },
+                            "address": {
+                              "type": "string",
+                              "default": "",
+                              "description": "Delivery address if delivery"
+                            },
+                            "orderType": {
+                              "type": "string",
+                              "default": "",
+                              "description": "delivery or pickup"
+                            },
+                            "deliveryTime": {
+                              "type": "string",
+                              "default": "",
+                              "description": "Preferred delivery or pickup time"
+                            }
+                          }
+                        },
+                        "description": "Places a food order for delivery or pickup at Gold Coast Kitchen. Call this only after reading back the full order summary and customer has confirmed."
+                      },
+                      "messages": [
+                        {
+                          "type": "request-start",
+                          "blocking": false
+                        }
+                      ],
+                      "orgId": "a4569926-67ba-424a-9249-fb69360dfc37",
+                      "server": {
+                        "url": "https://automatewithgloria.app.n8n.cloud/webhook/cffafaaf-7636-4400-a6f0-a8e3aeb900c8",
+                        "timeoutSeconds": 20,
+                        "headers": {
+                          "X-Chat-Id": "fdac5a59-13f9-4044-869f-de14efddf294"
+                        }
+                      },
+                      "async": false,
+                      "variableExtractionPlan": {
+                        "schema": {
+                          "type": "object",
+                          "required": [],
+                          "properties": {}
+                        }
+                      }
+                    },
+                    {
+                      "id": "59b5eef2-1a45-4aef-8624-4132b5197bcc",
+                      "createdAt": "2026-03-10T19:14:48.083Z",
+                      "updatedAt": "2026-03-12T12:27:58.685Z",
+                      "type": "function",
+                      "function": {
+                        "name": "bookEvent",
+                        "parameters": {
+                          "type": "object",
+                          "required": [
+                            "name",
+                            "phone",
+                            "email",
+                            "date",
+                            "time",
+                            "guests",
+                            "type"
+                          ],
+                          "properties": {
+                            "date": {
+                              "type": "string",
+                              "default": "",
+                              "description": "Reservation date YYYY-MM-DD"
+                            },
+                            "name": {
+                              "type": "string",
+                              "default": "",
+                              "description": "Customer's full name"
+                            },
+                            "time": {
+                              "type": "string",
+                              "default": "",
+                              "description": "Reservation time HH:MM"
+                            },
+                            "type": {
+                              "type": "string",
+                              "default": "",
+                              "description": "VIP or Regular"
+                            },
+                            "email": {
+                              "type": "string",
+                              "default": "",
+                              "description": "Customer's email address"
+                            },
+                            "phone": {
+                              "type": "string",
+                              "default": "",
+                              "description": "Customer's phone number"
+                            },
+                            "guests": {
+                              "type": "string",
+                              "default": "",
+                              "description": "Number of guests"
+                            }
+                          }
+                        },
+                        "description": "Creates a table reservation at Gold Coast Kitchen. Call this only after checkAvailability confirms the slot is available and customer has confirmed the booking."
+                      },
+                      "messages": [
+                        {
+                          "type": "request-start",
+                          "blocking": false
+                        }
+                      ],
+                      "orgId": "a4569926-67ba-424a-9249-fb69360dfc37",
+                      "server": {
+                        "url": "https://automatewithgloria.app.n8n.cloud/webhook/178d9df7-f446-4920-b4d4-1c9d45ebc060",
+                        "timeoutSeconds": 20,
+                        "headers": {
+                          "X-Chat-Id": "fdac5a59-13f9-4044-869f-de14efddf294"
+                        }
+                      },
+                      "variableExtractionPlan": {
+                        "schema": {
+                          "type": "object",
+                          "required": [],
+                          "properties": {}
+                        }
+                      }
+                    },
+                    {
+                      "id": "6cd70054-4a3b-4a5b-a692-344e5e736d64",
+                      "createdAt": "2026-03-10T18:44:36.721Z",
+                      "updatedAt": "2026-03-12T12:27:06.923Z",
+                      "type": "function",
+                      "function": {
+                        "name": "checkAvailability",
+                        "parameters": {
+                          "type": "object",
+                          "required": [
+                            "date",
+                            "time",
+                            "guests",
+                            "type"
+                          ],
+                          "properties": {
+                            "date": {
+                              "type": "string",
+                              "default": "",
+                              "description": "Requested date in YYYY-MM-DD format"
+                            },
+                            "time": {
+                              "type": "string",
+                              "default": "",
+                              "description": "Requested time in HH:MM format"
+                            },
+                            "type": {
+                              "type": "string",
+                              "default": "",
+                              "description": "Number of guests"
+                            },
+                            "guests": {
+                              "type": "string",
+                              "default": "",
+                              "description": "Number of guests"
+                            }
+                          }
+                        },
+                        "description": "Checks table availability for a requested date, time, and party size at Gold Coast Kitchen. Call this before booking a table."
+                      },
+                      "messages": [
+                        {
+                          "type": "request-start",
+                          "blocking": false
+                        }
+                      ],
+                      "orgId": "a4569926-67ba-424a-9249-fb69360dfc37",
+                      "server": {
+                        "url": "https://automatewithgloria.app.n8n.cloud/webhook/2b7202ea-97df-43a7-9751-26b4581e0646",
+                        "timeoutSeconds": 20,
+                        "headers": {
+                          "X-Chat-Id": "fdac5a59-13f9-4044-869f-de14efddf294"
+                        }
+                      },
+                      "variableExtractionPlan": {
+                        "schema": {
+                          "type": "object",
+                          "required": [],
+                          "properties": {}
+                        }
+                      }
+                    },
+                    {
+                      "id": "a0a69c9c-50a4-43d3-85c2-616551c2da9d",
+                      "createdAt": "2026-03-10T18:42:22.269Z",
+                      "updatedAt": "2026-03-12T12:22:32.689Z",
+                      "type": "function",
+                      "function": {
+                        "name": "presentMenu",
+                        "parameters": {
+                          "type": "object",
+                          "required": [],
+                          "properties": {
+                            "category": {
+                              "type": "string",
+                              "default": "",
+                              "description": "Menu category requested e.g. soups, rice, mains, drinks"
+                            }
+                          }
+                        },
+                        "description": "Returns the current Gold Coast Kitchen menu by category. Call this when a customer wants to browse the menu or hear what's available."
+                      },
+                      "messages": [
+                        {
+                          "type": "request-start",
+                          "blocking": false
+                        }
+                      ],
+                      "orgId": "a4569926-67ba-424a-9249-fb69360dfc37",
+                      "server": {
+                        "url": "https://automatewithgloria.app.n8n.cloud/webhook/7156c491-201d-455f-a20c-e0e899c98b29",
+                        "timeoutSeconds": 20,
+                        "headers": {
+                          "X-Chat-Id": "fdac5a59-13f9-4044-869f-de14efddf294"
+                        }
+                      },
+                      "variableExtractionPlan": {
+                        "schema": {
+                          "type": "object",
+                          "required": [],
+                          "properties": {}
+                        }
+                      }
+                    },
+                    {
+                      "id": "4b5cce83-7036-4653-9a9b-593cc3e7c23e",
+                      "createdAt": "2026-03-10T17:36:18.034Z",
+                      "updatedAt": "2026-03-12T12:35:03.564Z",
+                      "type": "function",
+                      "function": {
+                        "name": "faqLookup",
+                        "parameters": {
+                          "type": "object",
+                          "required": [
+                            "question"
+                          ],
+                          "properties": {
+                            "question": {
+                              "type": "string",
+                              "default": "",
+                              "description": "The customer's question"
+                            }
+                          }
+                        },
+                        "description": "Looks up answers to customer questions from the Gold Coast Kitchen knowledge base. Call this for any question about the restaurant including hours, menu, location, allergens, parking, halal status, policies, and any general enquiry."
+                      },
+                      "messages": [
+                        {
+                          "type": "request-start",
+                          "blocking": false
+                        }
+                      ],
+                      "orgId": "a4569926-67ba-424a-9249-fb69360dfc37",
+                      "server": {
+                        "url": "https://automatewithgloria.app.n8n.cloud/webhook/5252cb65-eab6-4fdd-b0fa-8fada8649ae5",
+                        "timeoutSeconds": 20,
+                        "headers": {
+                          "X-Chat-Id": "fdac5a59-13f9-4044-869f-de14efddf294"
+                        }
+                      },
+                      "variableExtractionPlan": {
+                        "schema": {
+                          "type": "object",
+                          "required": [],
+                          "properties": {}
+                        }
+                      }
+                    },
+                    {
+                      "id": "db011e59-5b61-49a2-9caa-04f1ea87b3c4",
+                      "createdAt": "2026-03-10T00:55:09.799Z",
+                      "updatedAt": "2026-03-12T11:33:17.171Z",
+                      "type": "function",
+                      "function": {
+                        "name": "clientLookup",
+                        "parameters": {
+                          "type": "object",
+                          "required": [
+                            "phone"
+                          ],
+                          "properties": {
+                            "phone": {
+                              "type": "string",
+                              "default": "",
+                              "description": "The caller's phone number"
+                            }
+                          }
+                        },
+                        "description": "Looks up a customer by phone number in the Gold Coast Kitchen CRM. Call this at the start of every conversation after getting the caller's phone number."
+                      },
+                      "messages": [
+                        {
+                          "type": "request-start",
+                          "blocking": false
+                        }
+                      ],
+                      "orgId": "a4569926-67ba-424a-9249-fb69360dfc37",
+                      "server": {
+                        "url": "https://automatewithgloria.app.n8n.cloud/webhook/697cfd9a-d187-49b3-b4e6-67e3457186d4",
+                        "timeoutSeconds": 20,
+                        "headers": {
+                          "X-Chat-Id": "fdac5a59-13f9-4044-869f-de14efddf294"
+                        }
+                      },
+                      "async": false,
+                      "variableExtractionPlan": {
+                        "schema": {
+                          "type": "object",
+                          "required": [],
+                          "properties": {}
+                        }
+                      }
+                    },
+                    {
+                      "id": "bba82510-1026-47d3-80eb-37c9fd6a460e",
+                      "createdAt": "2026-03-10T00:37:26.296Z",
+                      "updatedAt": "2026-03-12T12:16:48.027Z",
+                      "type": "function",
+                      "function": {
+                        "name": "newClientCRM",
+                        "parameters": {
+                          "type": "object",
+                          "required": [
+                            "name",
+                            "phone",
+                            "email"
+                          ],
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "default": "",
+                              "description": ""
+                            },
+                            "email": {
+                              "type": "string",
+                              "default": "",
+                              "description": ""
+                            },
+                            "phone": {
+                              "type": "string",
+                              "default": "",
+                              "description": ""
+                            }
+                          }
+                        },
+                        "description": "Registers a new customer in the Gold Coast Kitchen CRM. Call this when clientLookup returns no match."
+                      },
+                      "messages": [
+                        {
+                          "type": "request-start",
+                          "blocking": false
+                        }
+                      ],
+                      "orgId": "a4569926-67ba-424a-9249-fb69360dfc37",
+                      "server": {
+                        "url": "https://automatewithgloria.app.n8n.cloud/webhook/4169119e-bd57-4446-9fcd-aeccd0206fa9",
+                        "timeoutSeconds": 20,
+                        "headers": {
+                          "X-Chat-Id": "fdac5a59-13f9-4044-869f-de14efddf294"
+                        }
+                      },
+                      "variableExtractionPlan": {
+                        "schema": {
+                          "type": "object",
+                          "required": [],
+                          "properties": {}
+                        }
+                      }
+                    }
+                  ]
+                },
+                "firstMessage": "Welcome to Gold Coast Kitchen! This is Ruby. How can I help you today?",
+                "voicemailMessage": "Hello, this is Riley from Wellness Partners. I'm calling about your appointment. Please call us back at your earliest convenience so we can confirm your scheduling details.",
+                "endCallMessage": "Thank you for scheduling with Wellness Partners. Your appointment is confirmed, and we look forward to seeing you soon. Have a wonderful day!",
+                "transcriber": {
+                  "model": "nova-3",
+                  "language": "en-GB",
+                  "numerals": true,
+                  "provider": "deepgram",
+                  "endpointing": 150
+                },
+                "clientMessages": [
+                  "conversation-update",
+                  "function-call",
+                  "hang",
+                  "model-output",
+                  "speech-update",
+                  "status-update",
+                  "transfer-update",
+                  "transcript",
+                  "tool-calls",
+                  "user-interrupted",
+                  "voice-input",
+                  "workflow.node.started",
+                  "assistant.started"
+                ],
+                "serverMessages": [
+                  "conversation-update",
+                  "end-of-call-report",
+                  "function-call",
+                  "hang",
+                  "speech-update",
+                  "status-update",
+                  "tool-calls",
+                  "transfer-destination-request",
+                  "handoff-destination-request",
+                  "user-interrupted",
+                  "assistant.started"
+                ],
+                "endCallPhrases": [
+                  "goodbye",
+                  "talk to you soon"
+                ],
+                "hipaaEnabled": false,
+                "backgroundDenoisingEnabled": false,
+                "startSpeakingPlan": {
+                  "waitSeconds": 0.4,
+                  "smartEndpointingEnabled": "livekit"
+                }
+              }
+            }
+          },
+          "webhookUrl": "https://automatewithgloria.app.n8n.cloud/webhook/e88aeb55-b61e-42cb-8a57-0c4a7c0c89a3",
+          "executionMode": "production"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        []
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "d1cb9447-8cf7-442e-95b1-8456dc44607d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e0622078430b1ea13317630c9792433d97fbc6c5410cc0e721a315f8c106c418"
+  },
+  "id": "ZhzrXKmTtUikaia4",
+  "tags": []
+}
