@@ -185,19 +185,23 @@ ruby-ai-voice-receptionist/
 4. **Assign phone number** — link your phone number to the Ruby assistant in VAPI
 5. **Test each workflow** — use the test payloads below before going live
 
-### Sample Test Payload
+### Ruby live call
 
 ```json
-{
-  "CustomerName": "Chioma Okafor",
-  "OrderID": "GCK-TEST-001",
-  "OrderType": "Delivery",
-  "Items": "1x Jollof Rice (Large), 2x Chicken Wings, 1x Chapman",
-  "Total": "₦18,500",
-  "Address": "15 Admiralty Way, Lekki Phase 1, Lagos",
-  "Status": "Order Received",
-  "PaymentLink": "https://paystack.com/pay/gck-test-001"
-}
+### 🎙️ Hear Ruby in Action — First Live Test Call
+
+Click below to listen to Ruby handling a real inbound call from start to finish:
+
+[![Listen to Ruby's First Live Call](https://img.shields.io/badge/▶%20Play-Ruby's%20First%20Live%20Call-gold?style=for-the-badge)](https://drive.google.com/file/d/1nEBeGHHVaXmO9zw09SH2LmE_8mFtdQF8/view?usp=sharing)
+
+> Ruby answers the call, takes the order, confirms details and triggers the automated email — all without any human involvement.
+```
+
+## STEP 4 — Commit the change
+
+Scroll down and in the commit message type:
+```
+Added live test call recording link
 ```
 
 ---
