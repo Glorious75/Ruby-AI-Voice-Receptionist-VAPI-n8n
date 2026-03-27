@@ -226,7 +226,7 @@ Gold Coast Kitchen now has a receptionist that works **24 hours a day, 7 days a 
 Ruby was built as a capstone project completing an n8n automation module — two weeks of sleepless nights, endless debugging, and the deeply satisfying moment when she answered her first live call.
 
 - 🌍 [LinkedIn](https://www.linkedin.com/in/gloria-njorteah)
-- 💼 [Upwork](https://www.upwork.com)
+- 💼 [[Upwork](https://www.upwork.com)](https://www.upwork.com/freelancers/~01e99ac9a61c93ab23?mp_source=share)
 - 🐙 [GitHub](https://github.com/Glorious75)
 
 > *Available to build AI voice agents and automation systems for your business. Let's talk.*
